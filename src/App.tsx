@@ -27,7 +27,6 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
 
   let is_mount = true
     const {request, loading} = AxiosApi()
-
     const [data, setData] = useState<IDataCurrency[]>([])
 
 
@@ -43,9 +42,7 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
 
 
     useEffect(()=>{
-        if(currency!==''){
-            getValueCurrencyAll()
-        }
+        getValueCurrencyAll()
     }, [currency])
 
     /*------ Update values every 15 sec ----*/
@@ -56,7 +53,7 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
         }, 15000);
 
         return ()=> clearInterval(interval)
-    }, [])
+    }, [currency])
 
 
 
@@ -65,6 +62,7 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
 
 
     const getValueCurrencyAll = async()=>{
+
         let arr_data:IDataCurrency[] = []
         Promise
             .all(currency_arr.map(item=>{
@@ -80,7 +78,7 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
 
 
     const getConvertCurrency = async(currency_l, arr)=>{
-console.log(currency)
+
        await request(`${API_CONVERTER}?base=${currency_l}&symbols=${currency}`)
             .then(result=>{
                 arr.push({
@@ -91,7 +89,6 @@ console.log(currency)
             })
             .catch(e=>console.log(e))
     }
-
 
 
   return (

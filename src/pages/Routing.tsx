@@ -9,7 +9,9 @@ import Converter from "./converter/Converter";
 /*-----Interface----*/
 import {IDataCurrency} from "../utils/interfaces";
 
-function Routing({data, loading, setCurrency}:{data:IDataCurrency[], loading: boolean, setCurrency:(value:string)=>void}){
+function Routing({data, loading, setCurrency}:
+                     {data:IDataCurrency[], loading: boolean, setCurrency:(value:string)=>void}){
+
     return(
 
         <Switch>
