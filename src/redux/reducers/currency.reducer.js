@@ -1,6 +1,6 @@
 
 
-const currencyReducer = (state='', action)=>{
+const currencyReducer = (state='UZS', action)=>{
     switch(action.type){
         case 'set_currency':
             return action.payload
