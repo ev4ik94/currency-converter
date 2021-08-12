@@ -51,13 +51,11 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
     /*------ Update values every 15 sec ----*/
 
     useEffect(()=>{
-        setInterval(()=>{
+        const interval = setInterval(()=>{
             getValueCurrencyAll()
-        }, 15000)
+        }, 15000);
 
-        clearInterval(setInterval(()=>{
-            getValueCurrencyAll()
-        }, 15000))
+        return ()=> clearInterval(interval)
     }, [])
 
 
@@ -82,7 +80,7 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
 
 
     const getConvertCurrency = async(currency_l, arr)=>{
-
+console.log(currency)
        await request(`${API_CONVERTER}?base=${currency_l}&symbols=${currency}`)
             .then(result=>{
                 arr.push({

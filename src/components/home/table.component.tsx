@@ -40,9 +40,10 @@ export function TableComponent({data = []}:{data:IDataCurrency[]}){
     const currency = useSelector((state:{currency:string})=>state.currency)
 
     useEffect(()=>{
-console.log(currency)
+console.log(`${currency} - cur`)
+
         setRows(data.map((item, index)=>{
-// console.log(item.rates)
+console.log(item.rates)
             let value:number = decimalAdjust('round', item.rates[currency], -2)
             return createData(index+1, item.base, `${costRepl(value)} ${currency}`)
         }))
