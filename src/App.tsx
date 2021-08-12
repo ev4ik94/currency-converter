@@ -33,7 +33,7 @@ function App({currency, setCurrency}:{currency:string, setCurrency:(value:string
 
     useEffect(()=>{
         if(is_mount){
-            setCurrency('UZS')
+            getValueCurrencyAll()
         }
         return ()=>{
             is_mount = false

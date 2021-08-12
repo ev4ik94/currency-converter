@@ -42,7 +42,7 @@ export function TableComponent({data = []}:{data:IDataCurrency[]}){
     useEffect(()=>{
 
         setRows(data.map((item, index)=>{
-
+console.log(item.rates)
             let value:number = decimalAdjust('round', item.rates[currency], -2)
             return createData(index+1, item.base, `${costRepl(value)} ${currency}`)
         }))
