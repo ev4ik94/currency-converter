@@ -15,18 +15,21 @@ import {Header} from "./components/Header";
 import {BrowserRouter} from 'react-router-dom';
 import Routing from "./pages/Routing";
 import {AxiosApi} from "./hooks/axios.hook";
-import {API_CONVERTER, currency_arr} from "./constants";
+import {API_CONVERTER, currency_arr} from "./utils/constants";
 
 
+/*------Interface----*/
+import {IDataCurrency} from "./utils/interfaces";
 
-function App({currency, setCurrency}) {
+
+function App({currency, setCurrency}:{currency:string, setCurrency:(value:string)=>void}) {
 
 
   let is_mount = true
     const {request, loading} = AxiosApi()
 
-    const [data, setData] = useState([])
-    let arr_data = []
+    const [data, setData] = useState<IDataCurrency[]>([])
+
 
     useEffect(()=>{
         if(is_mount){
@@ -47,15 +50,15 @@ function App({currency, setCurrency}) {
 
     /*------ Update values every 15 sec ----*/
 
-    // useEffect(()=>{
-    //     setInterval(()=>{
-    //         getValueCurrencyAll()
-    //     }, 15000)
-    //
-    //     clearInterval(()=>{
-    //         getValueCurrencyAll()
-    //     })
-    // }, [])
+    useEffect(()=>{
+        setInterval(()=>{
+            getValueCurrencyAll()
+        }, 15000)
+
+        clearInterval(setInterval(()=>{
+            getValueCurrencyAll()
+        }, 15000))
+    }, [])
 
 
 
@@ -64,21 +67,25 @@ function App({currency, setCurrency}) {
 
 
     const getValueCurrencyAll = async()=>{
+        let arr_data:IDataCurrency[] = []
         Promise
             .all(currency_arr.map(item=>{
                 if(item!==currency){
-                    return getConvertCurrency(item)
+                    return getConvertCurrency(item, arr_data)
                 }
             }))
-            .then((result) => {setData(arr_data)})
+            .then(() => {
+                setData(arr_data)
+            })
             .catch(ex => console.error(ex));
     }
 
 
-    const getConvertCurrency = async(currency_l)=>{
-        return await request(`${API_CONVERTER}?base=${currency_l}&symbols=${currency}`)
+    const getConvertCurrency = async(currency_l, arr)=>{
+
+       await request(`${API_CONVERTER}?base=${currency_l}&symbols=${currency}`)
             .then(result=>{
-                arr_data.push({
+                arr.push({
                     base: result.data.base,
                     date: result.data.date,
                     rates: result.data.rates
@@ -93,7 +100,7 @@ function App({currency, setCurrency}) {
     <div className="App">
         <BrowserRouter keyLength={12}>
           <Header currency={currency} setCurrency={setCurrency}/>
-          <Routing data={data} loading={loading}/>
+          <Routing data={data} loading={loading} setCurrency={setCurrency}/>
         </BrowserRouter>
     </div>
   );

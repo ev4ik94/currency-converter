@@ -1,6 +1,6 @@
 
 
-export const converterStyle = (theme) => ({
+export const converterInputStyle = (theme) => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
